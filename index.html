@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUNDESPORTE · Federações Esportivas Apoiadas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#050c1a;
+    --bg-1:#091430;
+    --bg-2:#0e1e42;
+    --bg-card:#12244c;
+    --bg-card-hover:#172c5c;
+    --line:#2a4784;
+    --line-soft:#1c2f5e;
+    --text:#f3f5fb;
+    --text-dim:#adbadd;
+    --text-faint:#6c7ba8;
+    --gold:#ffcc33;
+    --gold-soft:#ffcc3333;
+    --teal:#00ad54;
+    --blue:#1062ac;
+    --radius:18px;
+    --radius-sm:10px;
+    --shadow:0 20px 50px -20px rgba(0,0,0,0.6);
+    font-size:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #1062ac1a 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 0%, #00ad5414 0%, transparent 55%),
+      var(--bg-0);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  ::selection{background:var(--gold); color:#101f1c;}
+
+  .wrap{max-width:1280px; margin:0 auto; padding:0 28px;}
+
+  a{color:inherit;}
+
+  /* ---------- decorative sprite ---------- */
+  .sprite{position:absolute; width:0; height:0; overflow:hidden;}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 0 40px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line-soft);
+    background:
+      linear-gradient(180deg, #081736 0%, #050c1a 100%);
+  }
+  header.hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(255,204,51,0.05) 0px, rgba(255,204,51,0.05) 1px, transparent 1px, transparent 90px),
+      repeating-linear-gradient(25deg, rgba(0,173,84,0.06) 0px, rgba(0,173,84,0.06) 1px, transparent 1px, transparent 70px);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal);
+    background:#00ad541a; border:1px solid #00ad5440;
+    padding:6px 14px; border-radius:999px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:"●"; color:var(--gold); font-size:8px;}
+
+  h1.title{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:0.98;
+    letter-spacing:0.005em;
+    margin:0 0 18px;
+    text-transform:uppercase;
+    max-width:16ch;
+  }
+  h1.title span{color:var(--gold);}
+
+  .hero-sub{
+    font-size:17px;
+    color:var(--text-dim);
+    max-width:640px;
+    line-height:1.6;
+    margin:0 0 44px;
+  }
+
+  .scoreboard{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .score-cell{
+    background:var(--bg-2);
+    padding:24px 22px;
+    position:relative;
+  }
+  .score-cell .num{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:clamp(1.15rem, 2.1vw, 1.65rem);
+    color:var(--gold);
+    letter-spacing:-0.01em;
+    white-space:nowrap;
+  }
+  .score-cell .lbl{
+    margin-top:8px;
+    font-size:12.5px;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+  .score-cell:nth-child(2) .num, .score-cell:nth-child(3) .num{color:var(--teal);}
+
+  @media (max-width:760px){
+    .scoreboard{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ---------- CONTROLS ---------- */
+  .controls{
+    position:sticky; top:0; z-index:20;
+    background:#050c1aee;
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+    padding:20px 0;
+  }
+  .controls-row{
+    display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+  }
+  .search-box{
+    flex:1 1 260px;
+    position:relative;
+  }
+  .search-box input{
+    width:100%;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    padding:12px 16px 12px 42px;
+    border-radius:999px;
+    outline:none;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .search-box input::placeholder{color:var(--text-faint);}
+  .search-box input:focus{border-color:var(--gold); background:var(--bg-card-hover);}
+  .search-box svg{
+    position:absolute; left:16px; top:50%; transform:translateY(-50%);
+    width:16px; height:16px; color:var(--text-faint); pointer-events:none;
+  }
+
+  select{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    padding:11px 16px;
+    border-radius:999px;
+    outline:none;
+    cursor:pointer;
+  }
+  select:focus{border-color:var(--gold);}
+
+  .result-count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--text-faint);
+    white-space:nowrap;
+  }
+
+  .chips{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin-top:14px;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:13px;
+    padding:7px 13px 7px 10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--bg-card);
+    color:var(--text-dim);
+    cursor:pointer;
+    transition:all .15s ease;
+    user-select:none;
+  }
+  .chip svg{width:14px; height:14px; flex-shrink:0;}
+  .chip-n{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px; font-weight:600;
+    background:color-mix(in srgb, currentColor 16%, transparent);
+    padding:1px 6px; border-radius:999px;
+    margin-left:2px;
+  }
+  .chip.active .chip-n{background:#0710261f; color:#071026;}
+  .chip:hover{border-color:var(--fam-color, var(--gold)); color:var(--text);}
+  .chip.active{
+    background:var(--fam-color, var(--gold));
+    border-color:var(--fam-color, var(--gold));
+    color:#071026;
+    font-weight:600;
+  }
+  .chip.active svg{color:#071026 !important;}
+
+  .cat-summary{
+    margin-top:14px;
+    padding:20px 22px;
+    border-radius:18px;
+    background:linear-gradient(160deg, var(--bg-card) 0%, var(--bg-2) 130%);
+    border:1px solid var(--line-soft);
+    border-left:4px solid var(--sum-color, var(--gold));
+    animation:summaryFade .25s ease;
+  }
+  @keyframes summaryFade{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);}}
+
+  .cat-summary .cs-top{
+    display:flex; align-items:center; gap:14px;
+    margin-bottom:18px;
+  }
+  .cat-summary .cs-icon{
+    width:38px; height:38px; border-radius:11px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb, var(--sum-color, var(--gold)) 16%, transparent);
+    border:1px solid color-mix(in srgb, var(--sum-color, var(--gold)) 40%, transparent);
+  }
+  .cat-summary .cs-icon svg{width:20px; height:20px; color:var(--sum-color, var(--gold)); stroke-width:1.7;}
+  .cat-summary .cs-text{flex:1; min-width:0;}
+  .cat-summary .cs-label{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.07em;
+    color:var(--text-faint); margin-bottom:3px;
+  }
+  .cat-summary .cs-name{font-size:15.5px; font-weight:700; color:var(--text);}
+  .cat-summary .cs-badge{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px; color:var(--text-faint);
+    background:var(--bg-2); border:1px solid var(--line-soft);
+    padding:5px 11px; border-radius:999px; flex-shrink:0; white-space:nowrap;
+  }
+
+  .cat-summary .cs-stats{
+    display:grid; grid-template-columns:1fr 1fr 1fr;
+    gap:14px;
+  }
+  .cat-summary .cs-stat{
+    padding:14px 16px;
+    border-radius:13px;
+    background:var(--bg-2);
+    border:1px solid var(--line-soft);
+    position:relative;
+  }
+  .cat-summary .cs-stat.main{
+    background:color-mix(in srgb, var(--sum-color, var(--gold)) 9%, var(--bg-2));
+    border-color:color-mix(in srgb, var(--sum-color, var(--gold)) 35%, var(--line-soft));
+  }
+  .cat-summary .cs-stat-lbl{
+    font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--text-faint); margin-bottom:8px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .cat-summary .cs-dot{width:7px; height:7px; border-radius:50%; flex-shrink:0;}
+  .cat-summary .cs-stat.y25 .cs-dot{background:var(--teal);}
+  .cat-summary .cs-stat.y26 .cs-dot{background:var(--blue-dot, #4d9fff);}
+  .cat-summary .cs-stat.main .cs-dot{background:var(--gold);}
+  .cat-summary .cs-stat-val{
+    font-family:'JetBrains Mono',monospace; font-weight:700;
+    font-size:1.05rem; color:var(--text);
+    white-space:nowrap;
+  }
+  .cat-summary .cs-stat.y25 .cs-stat-val{color:var(--teal);}
+  .cat-summary .cs-stat.y26 .cs-stat-val{color:#4d9fff;}
+  .cat-summary .cs-stat.main .cs-stat-val{color:var(--gold); font-size:1.2rem;}
+  .cat-summary .cs-delta{
+    display:inline-flex; align-items:center; gap:3px;
+    font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+    margin-top:7px; padding:2px 7px; border-radius:6px;
+  }
+  .cat-summary .cs-delta.up{color:#6fcf97; background:#6fcf9718;}
+  .cat-summary .cs-delta.down{color:#eb5757; background:#eb575718;}
+  .cat-summary .cs-delta svg{width:11px; height:11px;}
+
+  @media (max-width:680px){
+    .cat-summary .cs-stats{grid-template-columns:1fr; gap:10px;}
+    .cat-summary .cs-badge{display:none;}
+  }
+
+  /* ---------- GRID ---------- */
+  main{padding:36px 0 90px;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(268px, 1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius);
+    padding:20px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    opacity:0;
+    transform:translateY(10px);
+    animation:rise .5s ease forwards;
+  }
+  @keyframes rise{to{opacity:1; transform:translateY(0);}}
+
+  .card::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--fam-color, var(--gold)) 14%, transparent), transparent 60%);
+    opacity:0; transition:opacity .18s ease;
+    pointer-events:none;
+  }
+  .card:hover{
+    border-color:var(--fam-color, var(--gold));
+    background:var(--bg-card-hover);
+    transform:translateY(-3px);
+  }
+  .card:hover::after{opacity:1;}
+  .card:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .card-top{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .fam-icon-wrap{
+    width:46px; height:46px;
+    border-radius:13px;
+    display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb, var(--fam-color, var(--gold)) 16%, transparent);
+    border:1px solid color-mix(in srgb, var(--fam-color, var(--gold)) 40%, transparent);
+  }
+  .fam-icon-wrap svg{width:24px; height:24px; color:var(--fam-color, var(--gold)); stroke-width:1.7;}
+
+  .year-tags{display:flex; gap:5px;}
+  .ytag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px; font-weight:600;
+    padding:3px 7px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    color:var(--text-faint);
+  }
+  .ytag.on{
+    color:#071026; background:var(--teal); border-color:var(--teal);
+  }
+
+  .card h3{
+    font-size:15.5px;
+    font-weight:700;
+    line-height:1.3;
+    margin:0 0 4px;
+    color:var(--text);
+  }
+  .card .fam-label{
+    font-size:11.5px;
+    color:var(--fam-color, var(--text-faint));
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:16px;
+  }
+
+  .card-total{
+    font-family:'JetBrains Mono',monospace;
+    font-size:19px;
+    font-weight:700;
+    color:var(--gold);
+    margin-bottom:12px;
+  }
+  .card-total small{
+    display:block;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:11px;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:3px;
+  }
+
+  .split-bar{
+    display:flex; height:6px; border-radius:4px; overflow:hidden;
+    background:var(--bg-2);
+  }
+  .split-bar div{height:100%;}
+  .split-bar .s25{background:var(--teal);}
+  .split-bar .s26{background:var(--gold);}
+  .split-legend{
+    display:flex; justify-content:space-between;
+    margin-top:7px;
+    font-size:10.5px; color:var(--text-faint);
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  .empty-state{
+    grid-column:1/-1;
+    text-align:center;
+    padding:80px 20px;
+    color:var(--text-faint);
+  }
+  .empty-state svg{width:44px; height:44px; margin-bottom:16px; color:var(--line);}
+  .empty-state p{font-size:15px; margin:0 0 6px; color:var(--text-dim);}
+  .empty-state span{font-size:13px;}
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed; inset:0;
+    background:#040a16cc;
+    backdrop-filter:blur(4px);
+    display:flex; align-items:flex-end;
+    justify-content:center;
+    z-index:100;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
+    padding:0;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+
+  .modal{
+    background:var(--bg-1);
+    border:1px solid var(--line);
+    border-bottom:none;
+    border-radius:24px 24px 0 0;
+    width:100%;
+    max-width:760px;
+    max-height:88vh;
+    overflow-y:auto;
+    padding:32px 32px 40px;
+    transform:translateY(30px);
+    transition:transform .25s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 -20px 60px rgba(0,0,0,.5);
+  }
+  .overlay.open .modal{transform:translateY(0);}
+
+  @media (min-width:860px){
+    .overlay{align-items:center; padding:24px;}
+    .modal{border-radius:24px; border-bottom:1px solid var(--line);}
+  }
+
+  .modal-close{
+    position:absolute; top:20px; right:20px;
+    width:36px; height:36px;
+    border-radius:50%;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--text-dim);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .modal-close:hover{color:var(--text); border-color:var(--gold);}
+  .modal-close svg{width:16px; height:16px;}
+
+  .modal-head{display:flex; gap:16px; align-items:flex-start; margin-bottom:8px; padding-right:44px;}
+  .modal-icon{
+    width:56px; height:56px; border-radius:16px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb, var(--fam-color) 16%, transparent);
+    border:1px solid color-mix(in srgb, var(--fam-color) 40%, transparent);
+  }
+  .modal-icon svg{width:28px; height:28px; color:var(--fam-color); stroke-width:1.7;}
+  .modal-head h2{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    font-size:1.5rem;
+    line-height:1.15;
+    margin:2px 0 6px;
+  }
+  .modal-head .fam-label{font-size:12px; color:var(--fam-color); text-transform:uppercase; letter-spacing:.07em; font-weight:600;}
+
+  .modal-stats{margin:22px 0 4px;}
+
+  .tabbar{
+    display:flex; gap:8px;
+    margin:26px 0 22px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .tab{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13.5px; font-weight:600;
+    padding:10px 4px;
+    background:none; border:none;
+    color:var(--text-faint);
+    cursor:pointer;
+    position:relative;
+    margin-right:18px;
+  }
+  .tab.active{color:var(--gold);}
+  .tab.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--gold);
+  }
+  .tab:disabled{color:#3a5450; cursor:not-allowed;}
+
+  .no-data{
+    padding:40px 0; text-align:center; color:var(--text-faint); font-size:14px;
+  }
+
+  .totals-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    margin-bottom:22px;
+  }
+  .total-box{
+    background:var(--bg-2);
+    border:1px solid var(--line-soft);
+    border-radius:14px;
+    padding:16px 18px;
+  }
+  .total-box .lbl{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); margin-bottom:6px;}
+  .total-box .val{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:1.15rem; color:var(--gold);}
+  .total-box.alt .val{color:var(--teal);}
+
+  .breakdown-title{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint);
+    margin:0 0 12px;
+  }
+
+  .bd-row{margin-bottom:13px;}
+  .bd-row .bd-top{display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:6px;}
+  .bd-row .bd-top .bd-name{color:var(--text-dim);}
+  .bd-row .bd-top .bd-val{font-family:'JetBrains Mono',monospace; color:var(--text); font-weight:600;}
+  .bd-track{height:8px; border-radius:5px; background:var(--bg-2); overflow:hidden;}
+  .bd-fill{height:100%; border-radius:5px; background:linear-gradient(90deg, var(--fam-color), var(--gold)); width:0; transition:width .6s cubic-bezier(.2,.8,.3,1);}
+
+  footer{
+    border-top:1px solid var(--line-soft);
+    padding:26px 0 50px;
+    color:var(--text-faint);
+    font-size:12.5px;
+    text-align:center;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ICON SPRITE -->
+<svg class="sprite" aria-hidden="true">
+<defs>
+<symbol id="ic-bola" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="9"/>
+  <path d="M12 6.2l4.4 3.2-1.7 5.2H9.3l-1.7-5.2z"/>
+  <path d="M12 6.2V3.2M16.4 9.4l2.7-1.6M14.7 14.6l1.7 2.7M9.3 14.6l-1.7 2.7M7.6 9.4L4.9 7.8"/>
+</symbol>
+<symbol id="ic-luta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 21v-3.6a4 4 0 0 1-2-3.5V10a2.6 2.6 0 0 1 5-1"/>
+  <path d="M11 8.3V6.2a1.9 1.9 0 1 1 3.8 0v2"/>
+  <path d="M14.8 8.2V6.6a1.9 1.9 0 1 1 3.8 0V13a6 6 0 0 1-6 6h-1.6a5 5 0 0 1-2.9-.9"/>
+</symbol>
+<symbol id="ic-agua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 8.5c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2"/>
+  <path d="M2 13.5c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2"/>
+  <path d="M2 18.5c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2"/>
+</symbol>
+<symbol id="ic-rodas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="8"/>
+  <circle cx="12" cy="12" r="2"/>
+  <path d="M12 4v3.4M12 16.6V20M4 12h3.4M16.6 12H20M6.3 6.3l2.4 2.4M15.3 15.3l2.4 2.4M17.7 6.3l-2.4 2.4M8.7 15.3l-2.4 2.4"/>
+</symbol>
+<symbol id="ic-mesa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="12" cy="9" rx="6" ry="7"/>
+  <path d="M12 16v6M9 22h6"/>
+</symbol>
+<symbol id="ic-precisao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="9"/>
+  <circle cx="12" cy="12" r="5.2"/>
+  <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="ic-animal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7 21v-8a5 5 0 0 1 10 0v8"/>
+  <circle cx="7" cy="21" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="17" cy="21" r="1" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="ic-performance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2.5l2.9 6.4 6.8.6-5.2 4.6 1.6 6.9-6.1-3.8-6.1 3.8 1.6-6.9-5.2-4.6 6.8-.6z"/>
+</symbol>
+<symbol id="ic-comunidade" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="8" cy="8" r="3"/><circle cx="16.2" cy="8.5" r="2.4"/>
+  <path d="M2.2 20v-.8a5 5 0 0 1 5-5h1.6a5 5 0 0 1 5 5V20"/>
+  <path d="M13.6 14.4h1a4.4 4.4 0 0 1 4.4 4.4V20"/>
+</symbol>
+<symbol id="ic-pista" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 6.5c6-2.2 12-2.2 18 0"/>
+  <path d="M3 12c6-2.2 12-2.2 18 0"/>
+  <path d="M3 17.5c6-2.2 12-2.2 18 0"/>
+</symbol>
+<symbol id="ic-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="9" cy="15.5" rx="6" ry="3"/>
+  <path d="M3 15.5v3c0 1.7 2.7 3 6 3s6-1.3 6-3v-3"/>
+  <ellipse cx="15" cy="8" rx="6" ry="3"/>
+  <path d="M9.3 10.6v2.8"/>
+</symbol>
+</defs>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">FUNDESPORTE · Mato Grosso do Sul</span>
+    <h1 class="title">Federações <span>Esportivas</span> Apoiadas</h1>
+    <p class="hero-sub">Painel interativo do investimento em convênios, passagens, transporte, arbitragem e demais apoios às federações esportivas sul-mato-grossenses nos anos de 2025 e 2026. Clique em qualquer federação para ver o detalhamento.</p>
+
+    <div class="scoreboard" id="scoreboard">
+      <div class="score-cell"><div class="num" data-count="20960710.51">R$ 0</div><div class="lbl">Total investido 2025–2026</div></div>
+      <div class="score-cell"><div class="num" data-count="13289938.67">R$ 0</div><div class="lbl">Total investido em 2025</div></div>
+      <div class="score-cell"><div class="num" data-count="7670771.84">R$ 0</div><div class="lbl">Total investido em 2026</div></div>
+      <div class="score-cell"><div class="num" id="fedCountStat">0</div><div class="lbl">Federações apoiadas</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="controls-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Buscar federação... (ex: judô, futebol, xadrez)" autocomplete="off">
+      </div>
+      <select id="yearFilter">
+        <option value="all">Todos os anos</option>
+        <option value="2025">Somente 2025</option>
+        <option value="2026">Somente 2026</option>
+        <option value="both">Presente nos dois anos</option>
+      </select>
+      <select id="sortBy">
+        <option value="name">Ordenar: Nome (A–Z)</option>
+        <option value="total-desc">Ordenar: Maior investimento</option>
+        <option value="total-asc">Ordenar: Menor investimento</option>
+      </select>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="chips" id="famChips"></div>
+    <div class="cat-summary" id="catSummary"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============ FAMÍLIAS ============ */
+const FAMILIES = {
+  bola:        { label:"Esportes de Bola",     color:"#6fcf97", icon:"ic-bola" },
+  luta:        { label:"Lutas e Artes Marciais",color:"#eb5757", icon:"ic-luta" },
+  agua:        { label:"Esportes Aquáticos",   color:"#56ccf2", icon:"ic-agua" },
+  rodas:       { label:"Sobre Rodas",          color:"#f2c94c", icon:"ic-rodas" },
+  mesa:        { label:"Raquete e Mesa",       color:"#bb6bd9", icon:"ic-mesa" },
+  precisao:    { label:"Precisão e Estratégia",color:"#9b51e0", icon:"ic-precisao" },
+  animal:      { label:"Equestres e Rurais",   color:"#c08552", icon:"ic-animal" },
+  performance: { label:"Performance",          color:"#f672a0", icon:"ic-performance" },
+  comunidade:  { label:"Esporte Social",       color:"#4f86d1", icon:"ic-comunidade" },
+  pista:       { label:"Atletismo e Pista",    color:"#ff8c42", icon:"ic-pista" },
+};
+
+/* ============ DADOS ============ */
+// campos: convenio, aereo, rodoviaria, ambulancia, transporte, crono, arbitragem, totalApoio, totalFomento
+function y(convenio,aereo,rodoviaria,ambulancia,transporte,crono,arbitragem,totalApoio,totalFomento){
+  return {convenio,aereo,rodoviaria,ambulancia,transporte,crono,arbitragem,totalApoio,totalFomento};
+}
+
+const DATA = [
+{ name:"Federação das APAEs do Estado de MS", fam:"comunidade",
+  y2025: y(163875,194475.57,0,0,0,0,0,194475.57,358350.57), y2026:null },
+
+{ name:"Federação de Atletismo de Mato Grosso do Sul", fam:"pista",
+  y2025: y(197187,87153.85,5018.82,50536.75,53570.41,23907.85,271250,491437.68,688624.68),
+  y2026: y(180000,48202.92,0,18377,54115.85,0,67500,188195.77,368195.77) },
+
+{ name:"Federação de Automobilismo do Mato Grosso do Sul", fam:"rodas",
+  y2025: y(0,0,0,71823.20,0,0,0,71823.20,71823.20),
+  y2026: y(498000,0,0,0,0,0,0,0,498000) },
+
+{ name:"Federação de Badminton do Mato Grosso do Sul", fam:"mesa",
+  y2025: y(0,0,0,0,25452,0,75500,100952,100952),
+  y2026: y(0,0,0,0,86716,0,35000,121716,121716) },
+
+{ name:"Federação de Bandas e Fanfarras", fam:"performance",
+  y2025: y(0,0,0,0,190548.40,0,0,190548.40,190548.40), y2026:null },
+
+{ name:"Federação de Basquetebol de Mato Grosso do Sul", fam:"bola",
+  y2025: y(486893.02,26899.48,3190.55,0,166130.65,0,304500,500720.68,987613.70),
+  y2026: y(0,0,479.78,0,51672.06,0,127750,179901.84,179901.84) },
+
+{ name:"Federação de Beisebol e Softbol", fam:"bola",
+  y2025: y(0,0,0,0,66252,0,0,66252,66252), y2026:null },
+
+{ name:"Federação de Boxe de Mato Grosso do Sul", fam:"luta",
+  y2025: y(0,0,31043.85,58998.96,65308.56,0,31750,187101.37,187101.37),
+  y2026: y(0,0,6140.12,25053.88,54890.92,0,18750,104834.92,104834.92) },
+
+{ name:"Federação de Breaking do Mato Grosso do Sul", fam:"performance",
+  y2025: y(0,34923.90,24355.77,0,0,0,0,59279.67,59279.67),
+  y2026: y(0,3868,21213.80,0,21983.52,0,0,47065.32,47065.32) },
+
+{ name:"Federação de Canoagem de Mato Grosso do Sul", fam:"agua",
+  y2025: y(499495,5485,0,0,71503.64,0,0,76988.64,576483.64),
+  y2026: y(0,0,0,0,19172.60,0,0,19172.60,19172.60) },
+
+{ name:"Federação de Ciclismo de Mato Grosso do Sul", fam:"rodas",
+  y2025: y(0,0,0,53177.86,0,0,7500,60677.86,60677.86), y2026:null },
+
+{ name:"Federação de Clubes de Laço de Mato Grosso do Sul", fam:"animal",
+  y2025: y(1994300,0,0,0,0,0,0,0,1994300),
+  y2026: y(1994300,0,0,0,0,0,0,0,1994300) },
+
+{ name:"Federação de Desportos Aquáticos do Mato Grosso do Sul", fam:"agua",
+  y2025: y(74999.96,3055.66,0,55544.41,12872.44,0,128500,199972.51,274972.47),
+  y2026: y(0,0,0,32159.75,0,0,72250,104409.75,104409.75) },
+
+{ name:"Federação de Futebol de Mato Grosso do Sul", fam:"bola",
+  y2025: y(1303915.79,0,0,43017.47,0,0,185000,228017.47,1531933.26),
+  y2026: y(1436383.40,0,0,259758.46,0,0,106750,366508.46,1802891.86) },
+
+{ name:"Federação de Futebol de Mesa de Mato Grosso do Sul", fam:"mesa",
+  y2025: y(0,5791.92,0,0,0,0,0,5791.92,5791.92), y2026:null },
+
+{ name:"Federação de Futebol de Salão de Mato Grosso do Sul", fam:"bola",
+  y2025: y(0,29014.50,0,43017.47,54000.02,0,237750,363781.99,363781.99),
+  y2026: y(0,0,3315.99,12971.25,115135.71,0,40250,171672.95,171672.95) },
+
+{ name:"Federação de Futevôlei de Mato Grosso do Sul", fam:"bola",
+  y2025: y(0,22144.71,4773.06,0,0,0,29750,56667.77,56667.77),
+  y2026: y(0,0,0,0,0,0,38500,38500,38500) },
+
+{ name:"Federação de Ginástica de Mato Grosso do Sul", fam:"performance",
+  y2025: y(99707.31,23329.91,0,0,46690,0,26750,96769.91,196477.22),
+  y2026: y(0,10304.88,0,18377,0,0,20000,48681.88,48681.88) },
+
+{ name:"Federação de Handebol de Mato Grosso do Sul", fam:"bola",
+  y2025: y(0,29181.56,0,9188.50,181429.46,0,184250,404049.52,404049.52),
+  y2026: y(0,0,0,0,91656,0,38750,130406,130406) },
+
+{ name:"Federação de Hipismo de Mato Grosso do Sul", fam:"animal",
+  y2025: y(0,0,0,21415.44,0,0,0,21415.44,21415.44), y2026:null },
+
+{ name:"Federação de Judô de Mato Grosso do Sul", fam:"luta",
+  y2025: y(309226.80,166033.85,0,89786.79,0,0,236500,492320.64,801547.44),
+  y2026: y(304920,72021,0,86859.09,0,0,100000,258880.09,563800.09) },
+
+{ name:"Federação de Karate de Mato Grosso do Sul", fam:"luta",
+  y2025: y(0,58225.52,0,0,62320,0,0,120545.52,120545.52),
+  y2026: y(0,16328.12,0,0,169832,0,0,186160.12,186160.12) },
+
+{ name:"Federação de Kickboxing do Mato Grosso do Sul", fam:"luta",
+  y2025: y(0,0,0,140978.91,73842,0,44250,259070.91,259070.91),
+  y2026: y(0,0,0,12526.94,111242,0,12250,136018.94,136018.94) },
+
+{ name:"Federação de Luta de Braço", fam:"luta",
+  y2025: y(0,18136.05,0,0,33976,0,0,52112.05,52112.05),
+  y2026: y(0,0,0,0,39076,0,0,39076,39076) },
+
+{ name:"Federação de Lutas Associadas do Mato Grosso do Sul", fam:"luta",
+  y2025: y(17857.19,0,0,0,67889.66,0,0,67889.66,85746.85),
+  y2026: y(0,28845.67,0,0,26905.66,0,0,55751.33,55751.33) },
+
+{ name:"Federação de Mixed Martial Arts", fam:"luta",
+  y2025: y(0,22254.32,2137.36,6263.47,13296,0,0,43951.15,43951.15),
+  y2026: y(0,0,1704.72,0,0,0,0,1704.72,1704.72) },
+
+{ name:"Federação de Motociclismo de Mato Grosso do Sul", fam:"rodas",
+  y2025: y(237337.93,0,0,0,0,0,0,0,237337.93), y2026:null },
+
+{ name:"Federação de Muay Thai do Mato Grosso do Sul", fam:"luta",
+  y2025: y(0,22170.84,0,9962.47,0,0,0,32133.31,32133.31),
+  y2026: y(0,3743.64,0,0,0,0,0,3743.64,3743.64) },
+
+{ name:"Federação de Orientação de Mato Grosso do Sul", fam:"precisao",
+  y2025: y(0,0,0,56443.31,0,0,0,56443.31,56443.31), y2026:null },
+
+{ name:"Federação de Padel", fam:"mesa",
+  y2025: y(0,0,0,0,14841.84,0,0,14841.84,14841.84), y2026:null },
+
+{ name:"Federação de Pescadores e Aquicultores do Estado de MS – FEPEAMS", fam:"animal",
+  y2025: y(150000,0,0,0,0,0,0,0,150000), y2026:null },
+
+{ name:"Federação de Rugby de Mato Grosso do Sul", fam:"bola",
+  y2025: y(0,28403.64,0,9188.50,0,0,0,37592.14,37592.14),
+  y2026: y(0,0,0,9188.50,0,0,0,9188.50,9188.50) },
+
+{ name:"Federação de Skate de Mato Grosso do Sul", fam:"performance",
+  y2025: y(0,0,912.03,0,10403.78,0,0,11315.81,11315.81), y2026:null },
+
+{ name:"Federação de Stand Up Paddle de Mato Grosso do Sul", fam:"agua",
+  y2025: y(0,3684.37,0,0,0,0,0,3684.37,3684.37), y2026:null },
+
+{ name:"Federação de Taekwondo do Mato Grosso do Sul", fam:"luta",
+  y2025: y(0,148857.74,0,4594.25,0,0,5500,158951.99,158951.99),
+  y2026: y(0,7885,12526.24,13782.75,0,0,10250,44443.99,44443.99) },
+
+{ name:"Federação de Tênis de Mesa de Mato Grosso do Sul", fam:"mesa",
+  y2025: y(0,0,1461.93,0,20195.22,0,101000,122657.15,122657.15),
+  y2026: y(0,9620.29,0,0,47581.70,0,26250,83451.99,83451.99) },
+
+{ name:"Federação de Tiro com Arco de Mato Grosso do Sul", fam:"precisao",
+  y2025: y(0,15670.18,0,0,0,0,0,15670.18,15670.18),
+  y2026: y(0,0,0,0,17395.50,0,0,17395.50,17395.50) },
+
+{ name:"Federação de Voleibol de Mato Grosso do Sul", fam:"bola",
+  y2025: y(479533.60,96402.19,7494.40,121119.15,21718.53,0,288000,534734.27,1014267.87),
+  y2026: y(0,14861.84,9914.31,93538.54,28241.50,0,106000,252556.19,252556.19) },
+
+{ name:"Federação de Wrestling de Mato Grosso do Sul", fam:"luta",
+  y2025: y(0,49913.16,0,10857.72,0,0,0,60770.88,60770.88), y2026:null },
+
+{ name:"Federação de Xadrez de Mato Grosso do Sul", fam:"precisao",
+  y2025: y(0,32639.62,0,0,0,0,26250,58889.62,58889.62),
+  y2026: y(0,5488.56,0,0,0,0,14500,19988.56,19988.56) },
+
+{ name:"Federação Desportiva de Surdos de Mato Grosso do Sul", fam:"comunidade",
+  y2025: y(0,41111.66,0,0,23802.36,0,9250,74164.02,74164.02),
+  y2026: y(0,35417.95,1503.52,0,53764.30,0,3000,93685.77,93685.77) },
+
+{ name:"Federação Equestre de Mato Grosso do Sul", fam:"animal",
+  y2025:null, y2026: y(0,0,0,13782.75,0,0,0,13782.75,13782.75) },
+
+{ name:"Federação Escolar de Mato Grosso do Sul", fam:"comunidade",
+  y2025: y(0,0,0,0,0,0,254000,254000,254000),
+  y2026: y(0,0,0,0,0,0,28250,28250,28250) },
+
+{ name:"Federação Kyokushin de Karatê", fam:"luta",
+  y2025: y(0,0,0,0,52676,0,0,52676,52676), y2026:null },
+
+{ name:"Federação Sul-Mato-Grossense de Jiu-Jítsu", fam:"luta",
+  y2025: y(74992,0,0,6263.47,57752,0,0,64015.47,139007.47),
+  y2026: y(0,0,0,12526.94,42452,0,0,54978.94,54978.94) },
+
+{ name:"Federação Sul-Mato-Grossense de Kung Fu Kuoshu", fam:"luta",
+  y2025: y(50000,31738.32,0,9188.50,11434.36,0,15000,67361.18,117361.18),
+  y2026: y(0,2329.82,0,0,27726.10,0,21250,51305.92,51305.92) },
+
+{ name:"Federação Universitária de Esportes de Mato Grosso do Sul", fam:"comunidade",
+  y2025: y(0,933981,0,0,170622,0,13500,1118103,1118103),
+  y2026: y(367490,0,0,0,0,0,18250,18250,385740) },
+];
+
+const FIELD_LABELS = {
+  convenio:"Convênio", aereo:"Passagem Aérea", rodoviaria:"Passagem Rodoviária",
+  ambulancia:"Ambulância", transporte:"Transporte", crono:"Cronometragem",
+  arbitragem:"Arbitragem"
+};
+
+/* ============ HELPERS ============ */
+function brl(n){
+  return (n||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL', minimumFractionDigits:2});
+}
+function totalGeral(fed){
+  return (fed.y2025?fed.y2025.totalFomento:0) + (fed.y2026?fed.y2026.totalFomento:0);
+}
+function slug(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+
+/* ============ RENDER CHIPS ============ */
+const famChips = document.getElementById('famChips');
+let activeFam = "all";
+
+const allChip = document.createElement('button');
+allChip.className = "chip active";
+allChip.innerHTML = `<svg><use href="#ic-coin"/></svg>Todas as modalidades<span class="chip-n">${DATA.length}</span>`;
+allChip.dataset.fam = "all";
+famChips.appendChild(allChip);
+
+Object.entries(FAMILIES).forEach(([key, f])=>{
+  const chip = document.createElement('button');
+  const n = DATA.filter(d=>d.fam===key).length;
+  chip.className = "chip";
+  chip.dataset.fam = key;
+  chip.style.setProperty('--fam-color', f.color);
+  chip.innerHTML = `<svg><use href="#${f.icon}"/></svg>${f.label}<span class="chip-n">${n}</span>`;
+  famChips.appendChild(chip);
+});
+
+famChips.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.chip');
+  if(!btn) return;
+  activeFam = btn.dataset.fam;
+  [...famChips.children].forEach(c=>c.classList.toggle('active', c===btn));
+  render();
+});
+
+/* ============ RENDER GRID ============ */
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('search');
+const yearFilter = document.getElementById('yearFilter');
+const sortBy = document.getElementById('sortBy');
+const resultCount = document.getElementById('resultCount');
+
+function matches(fed){
+  const q = slug(searchInput.value.trim());
+  if(q && !slug(fed.name).includes(q)) return false;
+  if(activeFam !== "all" && fed.fam !== activeFam) return false;
+  const yf = yearFilter.value;
+  if(yf === "2025" && !fed.y2025) return false;
+  if(yf === "2026" && !fed.y2026) return false;
+  if(yf === "both" && (!fed.y2025 || !fed.y2026)) return false;
+  return true;
+}
+
+function sortList(list){
+  const s = sortBy.value;
+  const arr = [...list];
+  if(s === "name") arr.sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  if(s === "total-desc") arr.sort((a,b)=>totalGeral(b)-totalGeral(a));
+  if(s === "total-asc") arr.sort((a,b)=>totalGeral(a)-totalGeral(b));
+  return arr;
+}
+
+function cardHTML(fed, i){
+  const f = FAMILIES[fed.fam];
+  const t25 = fed.y2025 ? fed.y2025.totalFomento : 0;
+  const t26 = fed.y2026 ? fed.y2026.totalFomento : 0;
+  const tot = t25 + t26;
+  const p25 = tot ? (t25/tot*100) : 0;
+  const p26 = tot ? (t26/tot*100) : 0;
+
+  return `
+  <div class="card" style="--fam-color:${f.color}; animation-delay:${Math.min(i*22,400)}ms" data-idx="${i}" tabindex="0" role="button" aria-label="Ver detalhes de ${fed.name}">
+    <div class="card-top">
+      <div class="fam-icon-wrap"><svg><use href="#${f.icon}"/></svg></div>
+      <div class="year-tags">
+        <span class="ytag ${fed.y2025?'on':''}">25</span>
+        <span class="ytag ${fed.y2026?'on':''}">26</span>
+      </div>
+    </div>
+    <h3>${fed.name}</h3>
+    <div class="fam-label">${f.label}</div>
+    <div class="card-total"><small>Investimento total</small>${brl(tot)}</div>
+    <div class="split-bar">
+      <div class="s25" style="width:${p25}%"></div>
+      <div class="s26" style="width:${p26}%"></div>
+    </div>
+    <div class="split-legend">
+      <span>2025 · ${fed.y2025?brl(t25):'—'}</span>
+      <span>2026 · ${fed.y2026?brl(t26):'—'}</span>
+    </div>
+  </div>`;
+}
+
+let currentList = DATA;
+const catSummaryEl = document.getElementById('catSummary');
+
+let prevT25 = 0, prevT26 = 0, prevTotal = 0;
+
+function animateMoney(el, from, to){
+  if(Math.abs(to-from) < 0.005){ el.textContent = brl(to); return; }
+  const dur = 500;
+  const start = performance.now();
+  function step(now){
+    const p = Math.min((now-start)/dur, 1);
+    const eased = 1 - Math.pow(1-p, 3);
+    el.textContent = brl(from + (to-from)*eased);
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = brl(to);
+  }
+  requestAnimationFrame(step);
+}
+
+function renderCatSummary(filtered){
+  const t25 = filtered.reduce((s,f)=> s + (f.y2025 ? f.y2025.totalFomento : 0), 0);
+  const t26 = filtered.reduce((s,f)=> s + (f.y2026 ? f.y2026.totalFomento : 0), 0);
+  const total = t25 + t26;
+  const count = filtered.length;
+
+  let icon, color, name;
+  if(activeFam === "all"){
+    icon = "ic-coin";
+    color = "var(--gold)";
+    name = "Todas as modalidades";
+  } else {
+    const f = FAMILIES[activeFam];
+    icon = f.icon;
+    color = f.color;
+    name = f.label;
+  }
+
+  let deltaHTML = "";
+  if(t25 > 0 && t26 > 0){
+    const pct = ((t26 - t25) / t25) * 100;
+    const up = pct >= 0;
+    deltaHTML = `
+      <div class="cs-delta ${up?'up':'down'}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          ${up ? '<path d="M6 15l6-6 6 6"/>' : '<path d="M6 9l6 6 6-6"/>'}
+        </svg>
+        ${Math.abs(pct).toFixed(1)}% vs 2025
+      </div>`;
+  }
+
+  catSummaryEl.style.setProperty('--sum-color', color);
+  catSummaryEl.innerHTML = `
+    <div class="cs-top">
+      <div class="cs-icon"><svg><use href="#${icon}"/></svg></div>
+      <div class="cs-text">
+        <div class="cs-label">Total investido em</div>
+        <div class="cs-name">${name}</div>
+      </div>
+      <div class="cs-badge">${count} federaç${count===1?'ão':'ões'}</div>
+    </div>
+    <div class="cs-stats">
+      <div class="cs-stat y25">
+        <div class="cs-stat-lbl"><span class="cs-dot"></span>2025</div>
+        <div class="cs-stat-val" id="csVal25"></div>
+      </div>
+      <div class="cs-stat main">
+        <div class="cs-stat-lbl"><span class="cs-dot"></span>2025 + 2026</div>
+        <div class="cs-stat-val" id="csValTotal"></div>
+      </div>
+      <div class="cs-stat y26">
+        <div class="cs-stat-lbl"><span class="cs-dot"></span>2026</div>
+        <div class="cs-stat-val" id="csVal26"></div>
+        ${deltaHTML}
+      </div>
+    </div>
+  `;
+
+  animateMoney(document.getElementById('csVal25'), prevT25, t25);
+  animateMoney(document.getElementById('csValTotal'), prevTotal, total);
+  animateMoney(document.getElementById('csVal26'), prevT26, t26);
+  prevT25 = t25; prevT26 = t26; prevTotal = total;
+}
+
+function render(){
+  const filtered = sortList(DATA.filter(matches));
+  currentList = filtered;
+  resultCount.textContent = `${filtered.length} de ${DATA.length} federações`;
+  renderCatSummary(filtered);
+
+  if(filtered.length === 0){
+    grid.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <p>Nenhuma federação encontrada</p>
+        <span>Tente ajustar a busca ou os filtros</span>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(cardHTML).join('');
+}
+
+grid.addEventListener('click', (e)=>{
+  const card = e.target.closest('.card');
+  if(!card) return;
+  openModal(currentList[card.dataset.idx]);
+});
+grid.addEventListener('keydown', (e)=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target.closest('.card');
+  if(!card) return;
+  e.preventDefault();
+  openModal(currentList[card.dataset.idx]);
+});
+
+searchInput.addEventListener('input', render);
+yearFilter.addEventListener('change', render);
+sortBy.addEventListener('change', render);
+
+/* ============ MODAL ============ */
+const overlay = document.getElementById('overlay');
+const modalBody = document.getElementById('modalBody');
+let modalFed = null;
+let modalYear = null;
+
+function breakdownRows(yd){
+  const rows = Object.entries(FIELD_LABELS)
+    .map(([key,label])=>({label, val:yd[key]}))
+    .filter(r=>r.val > 0)
+    .sort((a,b)=>b.val-a.val);
+  const max = rows.length ? rows[0].val : 1;
+  return rows.map(r => `
+    <div class="bd-row">
+      <div class="bd-top"><span class="bd-name">${r.label}</span><span class="bd-val">${brl(r.val)}</span></div>
+      <div class="bd-track"><div class="bd-fill" data-w="${(r.val/max*100).toFixed(1)}"></div></div>
+    </div>`).join('');
+}
+
+function yearPane(fed, yr){
+  const yd = yr === 2025 ? fed.y2025 : fed.y2026;
+  if(!yd){
+    return `<div class="no-data">Esta federação não recebeu apoio registrado em ${yr}.</div>`;
+  }
+  return `
+    <div class="totals-row">
+      <div class="total-box"><div class="lbl">Total Apoio</div><div class="val">${brl(yd.totalApoio)}</div></div>
+      <div class="total-box alt"><div class="lbl">Total Apoio + Fomento</div><div class="val">${brl(yd.totalFomento)}</div></div>
+    </div>
+    <p class="breakdown-title">Detalhamento por rubrica — ${yr}</p>
+    ${breakdownRows(yd)}
+  `;
+}
+
+function fedStatsBlock(fed){
+  const t25 = fed.y2025 ? fed.y2025.totalFomento : 0;
+  const t26 = fed.y2026 ? fed.y2026.totalFomento : 0;
+  const total = t25 + t26;
+
+  let deltaHTML = "";
+  if(t25 > 0 && t26 > 0){
+    const pct = ((t26 - t25) / t25) * 100;
+    const up = pct >= 0;
+    deltaHTML = `
+      <div class="cs-delta ${up?'up':'down'}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          ${up ? '<path d="M6 15l6-6 6 6"/>' : '<path d="M6 9l6 6 6-6"/>'}
+        </svg>
+        ${Math.abs(pct).toFixed(1)}% vs 2025
+      </div>`;
+  }
+
+  return `
+    <div class="cs-stats modal-stats">
+      <div class="cs-stat y25">
+        <div class="cs-stat-lbl"><span class="cs-dot"></span>2025</div>
+        <div class="cs-stat-val">${fed.y2025 ? brl(t25) : '—'}</div>
+      </div>
+      <div class="cs-stat main">
+        <div class="cs-stat-lbl"><span class="cs-dot"></span>2025 + 2026</div>
+        <div class="cs-stat-val">${brl(total)}</div>
+      </div>
+      <div class="cs-stat y26">
+        <div class="cs-stat-lbl"><span class="cs-dot"></span>2026</div>
+        <div class="cs-stat-val">${fed.y2026 ? brl(t26) : '—'}</div>
+        ${deltaHTML}
+      </div>
+    </div>
+  `;
+}
+
+function openModal(fed){
+  modalFed = fed;
+  modalYear = fed.y2025 ? 2025 : 2026;
+  const f = FAMILIES[fed.fam];
+  modalBody.style.setProperty('--sum-color', f.color);
+
+  modalBody.innerHTML = `
+    <div class="modal-head">
+      <div class="modal-icon" style="--fam-color:${f.color}"><svg><use href="#${f.icon}"/></svg></div>
+      <div>
+        <div class="fam-label" style="--fam-color:${f.color}">${f.label}</div>
+        <h2>${fed.name}</h2>
+      </div>
+    </div>
+    ${fedStatsBlock(fed)}
+    <div class="tabbar">
+      <button class="tab" data-yr="2025" ${!fed.y2025?'disabled':''}>2025</button>
+      <button class="tab" data-yr="2026" ${!fed.y2026?'disabled':''}>2026</button>
+    </div>
+    <div id="yearPane" style="--fam-color:${f.color}"></div>
+  `;
+
+  renderYearPane();
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderYearPane(){
+  const pane = document.getElementById('yearPane');
+  pane.innerHTML = yearPane(modalFed, modalYear);
+  modalBody.querySelectorAll('.tab').forEach(t=>{
+    t.classList.toggle('active', Number(t.dataset.yr) === modalYear);
+  });
+  requestAnimationFrame(()=>{
+    pane.querySelectorAll('.bd-fill').forEach(el=>{
+      el.style.width = el.dataset.w + '%';
+    });
+  });
+}
+
+modalBody.addEventListener('click', (e)=>{
+  const tab = e.target.closest('.tab');
+  if(!tab || tab.disabled) return;
+  modalYear = Number(tab.dataset.yr);
+  renderYearPane();
+});
+
+function closeModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeModal(); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+
+/* ============ SCOREBOARD COUNT-UP ============ */
+function animateCount(el, target, isInt){
+  const dur = 1400;
+  const start = performance.now();
+  function step(now){
+    const p = Math.min((now-start)/dur, 1);
+    const eased = 1 - Math.pow(1-p, 3);
+    const val = target * eased;
+    el.textContent = isInt ? Math.round(val).toString() : brl(val);
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = isInt ? target.toString() : brl(target);
+  }
+  requestAnimationFrame(step);
+}
+document.querySelectorAll('[data-count]').forEach(el=>{
+  animateCount(el, parseFloat(el.dataset.count), false);
+});
+document.querySelectorAll('[data-count-int]').forEach(el=>{
+  animateCount(el, parseInt(el.dataset.countInt), true);
+});
+animateCount(document.getElementById('fedCountStat'), DATA.length, true);
+
+/* ============ INIT ============ */
+render();
+</script>
+</body>
+</html>
